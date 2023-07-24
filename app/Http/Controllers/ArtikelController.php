@@ -9,8 +9,15 @@ use Illuminate\Support\Facades\DB;
 
 class ArtikelController extends Controller
 {
-    public function readAll()
+    public function readAll(Request $request)
     {
+		$search = $request->search;
+
+        if($search){
+            $artikels = Artikel::where('judul','like',"%".$search."%")->get();
+            return view('artikel.artikel', ['title' => "Artikel", 'artikels' => $artikels]); 
+        }
+        
         $artikels = Artikel::latest()-> get();
 
         return view('artikel.artikel', ['title' => "Artikel", 'artikels' => $artikels]);
